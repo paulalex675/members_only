@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Members Only</h1>
+
+<h2> Welcome to the Members Only area</h2>
+<p> 
+  If you are not a member, or if you haven't signed in yet, you will be able to view the posts but not the authors.<br>
+  That info is for 'Members Only'
+</p>
+
+<%= link_to "Sign Up", new_user_registration_path %>
+<span>
+<%= link_to "Sign in", new_user_session_path %>
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Post</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <% if user_signed_in? %>
+
+  <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.user.username %></td>
+        <td><%= post.post %></td>
+          <% if current_user == post.user %>
+            <td><%= link_to 'Show', post %></td>
+            <td><%= link_to 'Edit', edit_post_path(post) %></td>
+            <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </tr>
+    <% end %>
+  <% else %>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.post %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Post', new_post_path %>
